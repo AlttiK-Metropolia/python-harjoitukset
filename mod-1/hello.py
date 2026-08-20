@@ -1,2 +1,2 @@
 nimi = "Altti Kolkki"
-print("Hei, " + nimi + "!")
+print(f"Hei, {nimi}!")
