@@ -49,7 +49,7 @@ class Pelaaja(Inventaario, Sijainti):
     def tulosta_tiedot(self):
         esineet = self.esineet["esineet"]
         print(f"""Pelaajan tiedot:
-        Raha: {self.raha}
+        Raha: {self.raha:.2f} €
         Elämät: {self.elämät}
         Sijainti: {self.sijainti}
         Inventaario:

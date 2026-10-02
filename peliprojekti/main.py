@@ -6,7 +6,7 @@ from vihollinen import rotta_tappelu
 
 def nayta_paavalikko(sijainti):
     eka_valinta = "1. Etsi roskakoreja"
-    if sijainti == "Kauppa":
+    if sijainti.lower() == "kauppa":
         eka_valinta = "1. Palauta pulloja"
 
     print(f"""
@@ -71,6 +71,17 @@ def etsi_roskakori(pelaaja, roskakori):
             print(f"- {esine} (tila: {tiedot['tila']}, arvo: {tiedot['arvo']})")
             pelaaja.lisaa_esine(esine)
 
+def palauta_pulloja(pelaaja):
+    palautus = 0
+    for esine in pelaaja.esineet["esineet"][:]: # kopioidaan lista jotta voidaan muokata alkuperäistä
+        if esine in ["pullo_pieni", "pullo_iso", "tölkki"]:
+            tiedot = arvo_esineet[esine]
+            palautus += tiedot["arvo"]
+            pelaaja.poista_esine(esine)
+
+    pelaaja.lisaa_raha(palautus)
+    return palautus
+
 nimi = input("Anna nimesi: ")
 ikä = input("Anna ikäsi: ")
 if int(ikä) < 18:
@@ -88,10 +99,10 @@ while True:
         continue
 
     if valinta == "1":
-        if pelaaja.sijainti == "Kauppa":
-            print("\nPalautat pulloja ja saat rahaa!")
-            palautus = pelaaja.esineet.get("pullot_pieni", 0) * arvo_esineet["pullo_pieni"]["arvo"]
-            pelaaja.lisaa_raha(palautus)
+        if pelaaja.sijainti.lower() == "kauppa":
+            palautus = palauta_pulloja(pelaaja)
+
+            print(f"Palautit pulloja ja tölkkejä ja sait {palautus:.2f} €.")
         else:
             roskakori = valitse_roskakori(pelaaja)
             etsi_roskakori(pelaaja, roskakori)
