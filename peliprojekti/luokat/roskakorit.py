@@ -25,7 +25,7 @@ class Roskakori:
             for _ in range(yritykset):
                 # Onko roskakori jo täynnä?
                 if len(self.esineet) >= self.MAX_ESINEET:
-                    return
+                    break
                 # Osuiko arpa tälle esineelle?
                 if random.random() >= todnak:
                     continue
