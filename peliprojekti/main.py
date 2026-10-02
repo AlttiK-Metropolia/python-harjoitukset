@@ -2,6 +2,7 @@ from luokat.pelaaja import Pelaaja
 from luokat.roskakorit import Roskakori
 from data import arvo_esineet, sijainnit
 from random import randint
+from vihollinen import rotta_tappelu
 
 def nayta_paavalikko(sijainti):
     eka_valinta = "1. Etsi roskakoreja"
@@ -51,15 +52,24 @@ def valitse_roskakori(pelaaja):
         print("Virheellinen valinta.")
 
 def etsi_roskakori(pelaaja, roskakori):
+    if pelaaja.esineet.get("tila", 0) <= 0:
+        print("Inventaario on täynnä. Mene kauppaan palauttamaan esineitä.")
+        return
     if not roskakori.esineet:
         print("Roskakori on tyhjä.")
         return
 
     print("Löysit seuraavat esineet:")
     for esine in roskakori.esineet:
-        tiedot = arvo_esineet[esine]
-        print(f"- {esine} (tila: {tiedot['tila']}, arvo: {tiedot['arvo']})")
-        pelaaja.lisaa_esine(esine)
+        if esine == "rotta":
+            rotta_tappelu(pelaaja)
+        elif esine == "piikki":
+            pelaaja.poista_elämä(2)
+            print(f"Roskakorissa oli {esine}! Menetit kaksi elämää.")
+        else:
+            tiedot = arvo_esineet[esine]
+            print(f"- {esine} (tila: {tiedot['tila']}, arvo: {tiedot['arvo']})")
+            pelaaja.lisaa_esine(esine)
 
 nimi = input("Anna nimesi: ")
 ikä = input("Anna ikäsi: ")
