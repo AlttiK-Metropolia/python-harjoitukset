@@ -73,6 +73,10 @@ while True:
     nayta_paavalikko(pelaaja.sijainti)
     valinta = input("Valitse toiminto (1-4): ")
 
+    if not valinta.isdigit() or not (1 <= int(valinta) <= 4):
+        print("Virheellinen valinta.")
+        continue
+
     if valinta == "1":
         if pelaaja.sijainti == "Kauppa":
             print("\nPalautat pulloja ja saat rahaa!")
