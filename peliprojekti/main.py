@@ -1,4 +1,4 @@
-from pelaaja import Pelaaja
+from luokat.pelaaja import Pelaaja
 from luokat.roskakorit import Roskakori
 from data import arvo_esineet, sijainnit
 from random import randint
