@@ -35,5 +35,5 @@ class Roskakori:
 
                 self.esineet.append(esine)
                 kaytetty_tila += tiedot["tila"]
-            if random.random() < sijainnit[self.sijainti]["rotta"]:
-                self.esineet.append("rotta")
+        if random.random() < sijainnit[self.sijainti]["rotta"]:
+            self.esineet.append("rotta")
