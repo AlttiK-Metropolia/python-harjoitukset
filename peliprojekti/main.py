@@ -3,6 +3,26 @@ from luokat.roskakorit import Roskakori
 from data import arvo_esineet, sijainnit
 from random import randint
 from vihollinen import rotta_tappelu
+import os
+TALLENNUS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "save.txt")
+
+def save_pelaaja(pelaaja):
+    with open(TALLENNUS, "w") as f:
+        f.write(f"{pelaaja.raha:.2f},{pelaaja.elämät},{pelaaja.sijainti},{pelaaja.esineet['tila']},{nimi},{ikä}\n")
+        f.write(",".join(pelaaja.esineet["esineet"]) + "\n")
+
+def load_pelaaja():
+    with open(TALLENNUS, "r") as f:
+        data = f.readline().strip().split(",")
+        raha, elämät, sijainti, tila, nimi, ikä = data
+        pelaaja = Pelaaja(float(raha), int(elämät), sijainti)
+        pelaaja.esineet["tila"] = int(tila)
+        esineet = f.readline().strip().split(",")
+        if len(esineet) > 0 and esineet[0] != "":
+            pelaaja.esineet["esineet"] = esineet
+        else:
+            pelaaja.esineet["esineet"] = []
+        return pelaaja, nimi, ikä
 
 def nayta_paavalikko(sijainti):
     eka_valinta = "1. Etsi roskakoreja"
@@ -82,13 +102,21 @@ def palauta_pulloja(pelaaja):
     pelaaja.lisaa_raha(palautus)
     return palautus
 
-nimi = input("Anna nimesi: ")
-ikä = input("Anna ikäsi: ")
-if int(ikä) < 18:
-    print("Et ole tarpeeksi vanha pelaamaan.")
-    exit()
+try:
+    pelaaja, nimi, ikä = load_pelaaja()
+    jatka = input(f"Löytyi tallennus pelaajalle {nimi}. Jatketaanko? (k/e): ").lower() == "k"
+except (FileNotFoundError, ValueError):
+    jatka = False
 
-pelaaja = Pelaaja(raha=0)
+if jatka:
+    print(f"Tervetuloa takaisin, {nimi}!")
+else:
+    nimi = input("Anna nimesi: ")
+    ikä = int(input("Anna ikäsi: "))
+    if ikä < 18:
+        print("Et ole tarpeeksi vanha pelaamaan.")
+        exit()
+    pelaaja = Pelaaja(raha=0)
 
 while True:
     nayta_paavalikko(pelaaja.sijainti)
@@ -112,6 +140,7 @@ while True:
     elif valinta == "3":
         pelaaja.tulosta_tiedot()
     elif valinta == "4":
+        save_pelaaja(pelaaja)
         print("Kiitos pelaamisesta!")
         break
     else:
@@ -119,4 +148,7 @@ while True:
 
     if pelaaja.raha >= 50:
         print(f"\n🎉 Sait kasaan {pelaaja.raha:.2f} € — voitit päivän!")
+        break
+    if pelaaja.elämät <= 0:
+        print("Kuolit. Peli päättyi!")
         break
