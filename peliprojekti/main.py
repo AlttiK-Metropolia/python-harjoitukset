@@ -37,7 +37,7 @@ def load_pelaaja():
 def nayta_paavalikko(sijainti):
     eka_valinta = "1. Etsi roskakoreja"
     if sijainti.lower() == "kauppa":
-        eka_valinta = "1. Palauta pulloja"
+        eka_valinta = "1. Asioi kaupassa"
 
     print(f"""
 ----------------------------------------------------
@@ -94,8 +94,8 @@ def etsi_roskakori(pelaaja, roskakori):
         if esine == "rotta":
             rotta_tappelu(pelaaja)
         elif esine == "piikki":
-            pelaaja.poista_elämä(2)
-            print(f"Roskakorissa oli {esine}! Menetit kaksi elämää.")
+            pelaaja.poista_elämä(3)
+            print(f"Roskakorissa oli {esine}! Menetit kolme elämää.")
         else:
             tiedot = arvo_esineet[esine]
             if pelaaja.lisaa_esine(esine):
@@ -103,16 +103,45 @@ def etsi_roskakori(pelaaja, roskakori):
             else:
                 print(f"- {esine} ei mahtunut reppuun (tarvitsee {tiedot['tila']} tilaa, vapaana {pelaaja.esineet['tila']})")
 
-def palauta_pulloja(pelaaja):
-    palautus = 0
-    for esine in pelaaja.esineet["esineet"][:]: # kopioidaan lista jotta voidaan muokata alkuperäistä
-        if esine in ["pullo_pieni", "pullo_iso", "tölkki"]:
-            tiedot = arvo_esineet[esine]
-            palautus += tiedot["arvo"]
+def myy_esineet(pelaaja, hyväksytyt):
+    myydyt = []
+    tulot = 0
+
+    for esine in pelaaja.esineet["esineet"][:]:
+        if esine in hyväksytyt:
+            tulot += arvo_esineet[esine]["arvo"]
+            myydyt.append(esine)
             pelaaja.poista_esine(esine)
 
-    pelaaja.lisaa_raha(palautus)
-    return palautus
+    pelaaja.lisaa_raha(tulot)
+    return myydyt, tulot
+
+def kauppa_valikko(pelaaja):
+    pullot = ["tölkki", "pullo_pieni", "pullo_iso"]
+    arvoesineet = [e for e in arvo_esineet if e not in pullot]
+
+    while True:
+        print("""
+--- Kauppa ---
+1. Palauta pullot ja tölkit
+2. Myy arvoesineet
+3. Takaisin""")
+        valinta = input("Valitse (1-3): ")
+
+        if valinta == "1":
+            myydyt, tulot = myy_esineet(pelaaja, pullot)
+        elif valinta == "2":
+            myydyt, tulot = myy_esineet(pelaaja, arvoesineet)
+        elif valinta == "3":
+            return
+        else:
+            print("Virheellinen valinta.")
+            continue
+
+        if myydyt:
+            print(f"Myit: {', '.join(myydyt)} ja sait {tulot:.2f} €.")
+        else:
+            print("Sinulla ei ole mitään myytävää tästä ryhmästä.")
 
 try:
     pelaaja, nimi, ikä = load_pelaaja()
@@ -142,12 +171,10 @@ while True:
 
     if valinta == "1":
         if pelaaja.sijainti.lower() == "kauppa":
-            palautus = palauta_pulloja(pelaaja)
-
-            print(f"Palautit pulloja ja tölkkejä ja sait {palautus:.2f} €.")
+            kauppa_valikko(pelaaja)
         else:
             roskakori = valitse_roskakori(pelaaja)
-            etsi_roskakori(pelaaja, roskakori)
+            etsi_roskakori(pelaaja, roskakori)    
     elif valinta == "2":
         uusi_sijainti = valitse_sijainti()
         pelaaja.siirry(uusi_sijainti)
