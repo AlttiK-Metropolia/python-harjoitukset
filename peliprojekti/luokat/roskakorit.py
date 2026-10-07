@@ -15,25 +15,30 @@ class Roskakori:
         todennakoisyydet = sijainnit[self.sijainti]
         kaytetty_tila = 0
 
-        for esine, tiedot in arvo_esineet.items():
-            todnak = todennakoisyydet.get(esine)
+        # Sekoitetaan järjestys, etteivät pullot täytä roskista aina ennen arvoesineitä
+        esineet = list(arvo_esineet.items())
+        random.shuffle(esineet)
+
+        for esine, tiedot in esineet:
+            todnak = todennakoisyydet.get(esine, 0)
 
             yritykset = 1
             if todnak > 0.5:
-                yritykset = random.randint(3, 5)
+                yritykset = random.randint(1, 3)
 
             for _ in range(yritykset):
-                # Onko roskakori jo täynnä?
                 if len(self.esineet) >= self.MAX_ESINEET:
                     break
-                # Osuiko arpa tälle esineelle?
                 if random.random() >= todnak:
                     continue
-                # Mahtuuko se vielä tilan puolesta?
                 if kaytetty_tila + tiedot["tila"] > self.MAX_TILA:
                     continue
 
                 self.esineet.append(esine)
                 kaytetty_tila += tiedot["tila"]
-        if random.random() < sijainnit[self.sijainti]["rotta"]:
-            self.esineet.append("rotta")
+
+        # Vihut arvotaan erikseen, eivätkä ne vie roskiksen tilaa
+        for vihu in ("rotta", "piikki"):
+            if random.random() < todennakoisyydet.get(vihu, 0):
+                self.esineet.append(vihu)
+                break
