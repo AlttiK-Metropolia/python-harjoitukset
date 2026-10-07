@@ -1,7 +1,7 @@
 arvo_esineet = {
-    "tölkki": { "tila": 1, "arvo": 0.15 },
-    "pullo_pieni": { "tila": 1, "arvo": 0.2 },
-    "pullo_iso": { "tila": 2, "arvo": 0.4 },
+    "tölkki": { "tila": 1, "arvo": 0.25 },
+    "pullo_pieni": { "tila": 1, "arvo": 0.4 },
+    "pullo_iso": { "tila": 2, "arvo": 0.6 },
     "näppäimistö": { "tila": 7, "arvo": 5 },
     "puhelin": { "tila": 5, "arvo": 10 },
     "tietokone": { "tila": 12, "arvo": 30 },
