@@ -17,12 +17,12 @@ def muotoile_aika(sekunnit):
     return f"{minuutit:02d}:{sekunnit:02d}"
 
 def save_pelaaja(pelaaja):
-    with open(TALLENNUS, "w") as f:
+    with open(TALLENNUS, "w", encoding="utf-8") as f:
         f.write(f"{pelaaja.raha:.2f},{pelaaja.elämät},{pelaaja.sijainti},{pelaaja.esineet['tila']},{nimi},{ikä}\n")
         f.write(",".join(pelaaja.esineet["esineet"]) + "\n")
 
 def load_pelaaja():
-    with open(TALLENNUS, "r") as f:
+    with open(TALLENNUS, "r", encoding="utf-8") as f:
         data = f.readline().strip().split(",")
         raha, elämät, sijainti, tila, nimi, ikä = data
         pelaaja = Pelaaja(float(raha), int(elämät), sijainti)
@@ -188,11 +188,14 @@ while True:
         print("Virheellinen valinta. Yritä uudelleen.")
 
     if pelaaja.raha >= 50:
-        print(f"\n🎉 Sait kasaan {pelaaja.raha:.2f} € — voitit päivän!")
+        open(TALLENNUS, "w").close()
+        print(f"\n🎉 Sait kasaan {pelaaja.raha:.2f} € Voitit!")
         break
     if aikaa_jäljellä(päivän_alku) <= 0:
+        open(TALLENNUS, "w").close()
         print(f"\n🌙 Päivä päättyi! Keräsit {pelaaja.raha:.2f} € / 50 €. Hävisit.")
         break
     if pelaaja.elämät <= 0:
+        open(TALLENNUS, "w").close()
         print("Kuolit. Peli päättyi!")
         break
