@@ -5,6 +5,16 @@ from random import randint
 from vihollinen import rotta_tappelu
 import os
 TALLENNUS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "save.txt")
+import time
+
+paivan_pituus = 15 * 60
+
+def aikaa_jäljellä(päivän_alku):
+    return max(0, paivan_pituus - (time.time() - päivän_alku))
+
+def muotoile_aika(sekunnit):
+    minuutit, sekunnit = divmod(int(sekunnit), 60)
+    return f"{minuutit:02d}:{sekunnit:02d}"
 
 def save_pelaaja(pelaaja):
     with open(TALLENNUS, "w") as f:
@@ -88,8 +98,10 @@ def etsi_roskakori(pelaaja, roskakori):
             print(f"Roskakorissa oli {esine}! Menetit kaksi elämää.")
         else:
             tiedot = arvo_esineet[esine]
-            print(f"- {esine} (tila: {tiedot['tila']}, arvo: {tiedot['arvo']})")
-            pelaaja.lisaa_esine(esine)
+            if pelaaja.lisaa_esine(esine):
+                print(f"- {esine} (tila: {tiedot['tila']}, arvo: {tiedot['arvo']:.2f} €)")
+            else:
+                print(f"- {esine} ei mahtunut reppuun (tarvitsee {tiedot['tila']} tilaa, vapaana {pelaaja.esineet['tila']})")
 
 def palauta_pulloja(pelaaja):
     palautus = 0
@@ -118,7 +130,9 @@ else:
         exit()
     pelaaja = Pelaaja(raha=0)
 
+päivän_alku = time.time()
 while True:
+    print(f"\n⏰ Aikaa jäljellä: {muotoile_aika(aikaa_jäljellä(päivän_alku))}")
     nayta_paavalikko(pelaaja.sijainti)
     valinta = input("Valitse toiminto (1-4): ")
 
@@ -148,6 +162,9 @@ while True:
 
     if pelaaja.raha >= 50:
         print(f"\n🎉 Sait kasaan {pelaaja.raha:.2f} € — voitit päivän!")
+        break
+    if aikaa_jäljellä(päivän_alku) <= 0:
+        print(f"\n🌙 Päivä päättyi! Keräsit {pelaaja.raha:.2f} € / 50 €. Hävisit.")
         break
     if pelaaja.elämät <= 0:
         print("Kuolit. Peli päättyi!")

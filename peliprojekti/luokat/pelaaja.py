@@ -12,6 +12,8 @@ class Inventaario:
         if self.esineet["tila"] - tiedot["tila"] >= 0:
             self.esineet["esineet"].append(esine)
             self.esineet["tila"] -= tiedot["tila"]
+            return True
+        return False
 
     def poista_esine(self, esine):
         tiedot = arvo_esineet[esine]
