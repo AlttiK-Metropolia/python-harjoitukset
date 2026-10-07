@@ -2,9 +2,9 @@ from luokat.pelaaja import Pelaaja
 from luokat.roskakorit import Roskakori
 from data import arvo_esineet, sijainnit
 from random import randint
-from vihollinen import rotta_tappelu
+from vihollinen import rotta_tappelu, piikki_vaara
 import os
-TALLENNUS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "save.txt")
+DATA_KANSIO = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 import time
 
 paivan_pituus = 15 * 60
@@ -16,13 +16,17 @@ def muotoile_aika(sekunnit):
     minuutit, sekunnit = divmod(int(sekunnit), 60)
     return f"{minuutit:02d}:{sekunnit:02d}"
 
+def nayta_teksti(tiedosto):
+    with open(os.path.join(DATA_KANSIO, tiedosto), "r", encoding="utf-8") as f:
+        print(f.read())
+
 def save_pelaaja(pelaaja):
-    with open(TALLENNUS, "w", encoding="utf-8") as f:
+    with open(os.path.join(DATA_KANSIO, "save.txt"), "w", encoding="utf-8") as f:
         f.write(f"{pelaaja.raha:.2f},{pelaaja.elämät},{pelaaja.sijainti},{pelaaja.esineet['tila']},{nimi},{ikä}\n")
         f.write(",".join(pelaaja.esineet["esineet"]) + "\n")
 
 def load_pelaaja():
-    with open(TALLENNUS, "r", encoding="utf-8") as f:
+    with open(os.path.join(DATA_KANSIO, "save.txt"), "r", encoding="utf-8") as f:
         data = f.readline().strip().split(",")
         raha, elämät, sijainti, tila, nimi, ikä = data
         pelaaja = Pelaaja(float(raha), int(elämät), sijainti)
@@ -94,8 +98,7 @@ def etsi_roskakori(pelaaja, roskakori):
         if esine == "rotta":
             rotta_tappelu(pelaaja)
         elif esine == "piikki":
-            pelaaja.poista_elämä(3)
-            print(f"Roskakorissa oli {esine}! Menetit kolme elämää.")
+            piikki_vaara(pelaaja)
         else:
             tiedot = arvo_esineet[esine]
             if pelaaja.lisaa_esine(esine):
@@ -157,7 +160,9 @@ else:
     if ikä < 18:
         print("Et ole tarpeeksi vanha pelaamaan.")
         exit()
-    pelaaja = Pelaaja(raha=0)
+    nayta_teksti("intro.txt")
+    if input("Haluatko lukea ohjeet? (k/e): ").lower() == "k":
+        nayta_teksti("ohje.txt")
 
 päivän_alku = time.time()
 while True:
@@ -188,14 +193,14 @@ while True:
         print("Virheellinen valinta. Yritä uudelleen.")
 
     if pelaaja.raha >= 50:
-        open(TALLENNUS, "w").close()
+        open(os.path.join(DATA_KANSIO, "save.txt"), "w").close()
         print(f"\n🎉 Sait kasaan {pelaaja.raha:.2f} € Voitit!")
         break
     if aikaa_jäljellä(päivän_alku) <= 0:
-        open(TALLENNUS, "w").close()
+        open(os.path.join(DATA_KANSIO, "save.txt"), "w").close()
         print(f"\n🌙 Päivä päättyi! Keräsit {pelaaja.raha:.2f} € / 50 €. Hävisit.")
         break
     if pelaaja.elämät <= 0:
-        open(TALLENNUS, "w").close()
+        open(os.path.join(DATA_KANSIO, "save.txt"), "w").close()
         print("Kuolit. Peli päättyi!")
         break

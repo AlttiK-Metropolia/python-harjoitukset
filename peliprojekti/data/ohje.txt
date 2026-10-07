@@ -1,0 +1,34 @@
+====================================================
+                     OHJEET
+====================================================
+
+TAVOITE
+  Kerää 50 euroa ennen kuin 15 minuutin päivä
+  loppuu. Jos sydämet loppuvat, peli päättyy.
+
+ROSKIKSET
+  Valitse "Etsi roskakoreja" ja valitse yksi
+  löytämistäsi roskiksista. Löydetyt esineet
+  menevät reppuun, jos niille on tilaa.
+
+KAUPPA
+  Kaupassa voit palauttaa pullot ja tölkit tai
+  myydä arvoesineet. Tyhjennä reppu säännöllisesti,
+  ettei hyviä löytöjä jää roskikseen.
+
+VAARAT
+  Roskiksessa voi olla rotta tai käytetty piikki.
+  Kun vaara ilmestyy, paina ENTER 1.5 sekunnissa.
+  Jos olet liian hidas, menetät 2 sydäntä.
+  Sydämiä on 10.
+
+REPPU
+  Reppuun mahtuu 15 tilaa. Isot esineet vievät
+  enemmän tilaa.
+
+TALLENNUS
+  Valitse päävalikosta "Lopeta", niin peli
+  tallentuu. Seuraavalla kerralla voit jatkaa
+  siitä, mihin jäit.
+
+====================================================
