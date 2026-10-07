@@ -34,8 +34,7 @@ class Pelaaja(Inventaario, Sijainti):
         self.sijainti = sijainti
 
     def poista_elämä(self, maara):
-        if self.elämät - maara > 0:
-            self.elämät -= maara
+        self.elämät -= maara
 
     def lisaa_elämä(self, maara):
         self.elämät += maara
