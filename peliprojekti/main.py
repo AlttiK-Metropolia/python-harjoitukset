@@ -145,6 +145,9 @@ def kauppa_valikko(pelaaja):
             print(f"Myit: {', '.join(myydyt)} ja sait {tulot:.2f} €.")
         else:
             print("Sinulla ei ole mitään myytävää tästä ryhmästä.")
+pelaaja = None
+ikä = None
+nimi = None
 
 try:
     pelaaja, nimi, ikä = load_pelaaja()
@@ -163,6 +166,7 @@ else:
     nayta_teksti("intro.txt")
     if input("Haluatko lukea ohjeet? (k/e): ").lower() == "k":
         nayta_teksti("ohje.txt")
+    pelaaja = Pelaaja(raha=0)
 
 päivän_alku = time.time()
 while True:
