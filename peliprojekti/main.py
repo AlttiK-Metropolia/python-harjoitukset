@@ -160,7 +160,7 @@ if jatka:
 else:
     nimi = input("Anna nimesi: ")
     ikä = input("Anna ikäsi: ")
-    if not ikä.isdigit() or int(ikä) < 18:
+    if not ikä.isdigit() or int(ikä) < 12:
         print("Et ole tarpeeksi vanha pelaamaan.")
         exit()
     nayta_teksti("intro.txt")
