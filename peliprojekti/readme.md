@@ -1,18 +1,34 @@
 # Roskakori dyykkaus Simulaattori
 ### Altti Kolkki
 
-Pelaaja kävelee tieltä toiselle, jossa hän voi löytää 1 tai enemmän roskiksia.
-Pelaaja voi valita 3:sta eri alueesta. Puisto (enemmän pulloja, mutta enemmän piikkejä), Keskusta (enemmän arvoesineitä, mutta enemmän rottia), Asuinalue (pieni riski, mutta vain vähän pulloja, ruokaa ja arvoesineitä)
-Pelaajalla on inventaario (reppu), johon mahtuu 15 esineen edestä tavaraa. Jotkin esineet vievät enemmän tilaa. Inventaarion voi tyhjentää romuttamolla (halvat arvoesineet), kaupassa (pullot ja tölkit), tai kultakaupassa (arvokkaimmat arvoesineet). 
-Roskiksesta voi löytyä:
-- Pullo (iso = 40 senttiä, pieni = 20 senttiä)
-- Tölkki (15 senttiä)
-- Muita arvoesineitä (arvo riippuu esineestä)
-- Ruokaa tai juotavaa (syömäkelpoista, tai syömäkelvotonta)
-- Rotta (puree, jos pelaaja ei reagoi tarpeeksi nopeasti)
-- Piikki (pistää, jos pelaaja ei reagoi tarpeeksi nopeasti)
+## Pelin idea ja tarina
 
+Pelaajalla on 50 euron pikavippi erääntymässä huomenna, eikä tilillä ole rahaa. Kaupunki on kuitenkin täynnä roskiksia, ja ihmiset heittävät pois kaikenlaista: pantillisia pulloja ja tölkkejä, vanhoja puhelimia, tietokoneita ja joskus jopa kultaa. Pelaaja lähtee dyykkaamaan ja yrittää kerätä rahat kokoon yhden päivän aikana.
 
-Jos rotta puree, tai piikki pistää pelaaja menettää 2.5 sydäntä. Pelaajalla on 10 sydäntä. Pelaaja voi syödä tai juoda saadakseen elämiä hitaasti takaisin. Pelaaja voi myös mennä sairaalaan, joka maksaa vähintään 5 euroa, ja enintään 15 euroa. Hinta riippuu montako elämää pelaaja tarvitsee.
-Pelaaja voittaa, kun hänellä on 50 euroa päivässä. Päivä kestää pelissä 15 minuuttia.
-Jos pelaajan sydämmet pääsevät 0:aan, peli päättyy.
+## Tavoite
+
+Kerää 50 euroa ennen kuin 15 minuutin päivä loppuu.
+
+Peli päättyy:
+- **voittoon**, kun pelaajalla on vähintään 50 euroa
+- **tappioon**, jos päivä loppuu ennen sitä
+- **tappioon**, jos pelaajan 10 sydäntä loppuvat
+
+## Kestävä kehitys
+
+- Kierrätys
+- Uudelleenkäyttö
+
+## Toimintaperiaatteet
+
+1. Pelaaja valitsee alueen: puisto, keskusta tai asuinalue.
+2. Alueella pelaaja etsii roskiksia ja valitsee niistä yhden tutkittavaksi.
+3. Löydetyt esineet menevät reppuun, johon mahtuu 15 tilaa.
+4. Roskiksessa voi olla rotta tai piikki. Jos pelaaja ei paina ENTER 1.5 sekunnissa, hän menettää 3 sydäntä.
+5. Kun reppu täyttyy, pelaaja menee kauppaan ja myy tavarat rahaksi.
+6. Tätä toistetaan, kunnes rahaa on 50 euroa, aika loppuu tai sydämet loppuvat.
+
+Alueet eroavat toisistaan, joten jokainen niistä on oma reittinsä voittoon:
+- Puisto: paljon pulloja, vähän arvoesineitä
+- Keskusta: eniten arvoesineitä, mutta eniten vaaroja
+- Asuinalue: turvallisin, kohtalaisesti tavaraa
