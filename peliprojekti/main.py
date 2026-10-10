@@ -159,8 +159,8 @@ if jatka:
     print(f"Tervetuloa takaisin, {nimi}!")
 else:
     nimi = input("Anna nimesi: ")
-    ikä = int(input("Anna ikäsi: "))
-    if ikä < 18:
+    ikä = input("Anna ikäsi: ")
+    if not ikä.isdigit() or int(ikä) < 18:
         print("Et ole tarpeeksi vanha pelaamaan.")
         exit()
     nayta_teksti("intro.txt")
